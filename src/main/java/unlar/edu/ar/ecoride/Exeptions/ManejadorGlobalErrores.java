@@ -38,6 +38,11 @@ public class ManejadorGlobalErrores {
         return error("Cobro Fallido", e.getMessage());
     }
 
+    @ExceptionHandler(ExcepcionEstadoInvalido.class)
+    public ResponseEntity<Map<String, Object>> estadoInvalido(ExcepcionEstadoInvalido e) {
+        return error("Transición de Estado Inválida", e.getMessage());
+    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, Object>> argumentoInvalido(IllegalArgumentException e) {
         return error("Solicitud Inválida", e.getMessage());

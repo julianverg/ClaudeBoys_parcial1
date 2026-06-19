@@ -1,22 +1,21 @@
 package unlar.edu.ar.ecoride.dto;
 
 /**
- * Respuesta exitosa del desbloqueo. Se serializa a JSON automáticamente.
+ * Respuesta del desbloqueo (DTO). Expone solo datos relevantes para el cliente,
+ * sin filtrar entidades internas (apartado C).
  */
 public class RespuestaDesbloqueo {
 
     private String mensaje;
     private String patente;
     private String usuario;
-    private double montoCobrado;
-    private String medioPago;
+    private String estadoVehiculo;
 
-    public RespuestaDesbloqueo(String mensaje, String patente, String usuario, double montoCobrado, String medioPago) {
+    public RespuestaDesbloqueo(String mensaje, String patente, String usuario, String estadoVehiculo) {
         this.mensaje = mensaje;
         this.patente = patente;
         this.usuario = usuario;
-        this.montoCobrado = montoCobrado;
-        this.medioPago = medioPago;
+        this.estadoVehiculo = estadoVehiculo;
     }
 
     public String getMensaje() {
@@ -31,11 +30,7 @@ public class RespuestaDesbloqueo {
         return usuario;
     }
 
-    public double getMontoCobrado() {
-        return montoCobrado;
-    }
-
-    public String getMedioPago() {
-        return medioPago;
+    public String getEstadoVehiculo() {
+        return estadoVehiculo;
     }
 }

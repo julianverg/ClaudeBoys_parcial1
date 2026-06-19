@@ -48,6 +48,7 @@ public class TarjetaDeCredito implements ProcesadorDePago {
 
     @Override
     public boolean cobrar(double monto) {
+        // Simula el cobro con tarjeta de crédito: siempre exitoso.
         System.out.printf("Cobro exitoso de $%.2f realizado con Tarjeta de Crédito.%n", monto);
         return true;
     }

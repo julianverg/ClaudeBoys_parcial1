@@ -8,6 +8,7 @@ public class UsuarioRegular extends Usuario {
 
     @Override
     public double calcularTotal(double tarifa) {
+        // El usuario regular paga la tarifa completa, sin descuento.
         return tarifa;
     }
 }
