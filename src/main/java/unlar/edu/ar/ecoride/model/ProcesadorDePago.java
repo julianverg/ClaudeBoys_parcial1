@@ -1,6 +1,6 @@
 package unlar.edu.ar.ecoride.model;
 
-public interface ProcesadorDePago{
+public interface ProcesadorDePago {
 
-    public void cobrar(double monto);
+    boolean cobrar(double monto);
 }

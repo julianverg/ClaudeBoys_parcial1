@@ -13,13 +13,13 @@ public class BilleteraVirtual implements ProcesadorDePago {
     }
 
     @Override
-    public void cobrar(double monto) {
+    public boolean cobrar(double monto) {
         if (saldo >= monto) {
             saldo -= monto;
-            System.out.println("Cobro de $" + monto + " realizado con billetera virtual. Saldo restante: $" + saldo);
-        } else {
-            System.out.println("Saldo insuficiente en la billetera virtual.");
+            System.out.printf("Cobro exitoso de $%.2f realizado con Billetera Virtual. Saldo restante: $%.2f%n", monto, saldo);
+            return true;
         }
+        System.out.printf("Saldo insuficiente en la Billetera Virtual (saldo $%.2f, monto $%.2f).%n", saldo, monto);
+        return false;
     }
-
 }

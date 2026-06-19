@@ -1,51 +1,38 @@
 package unlar.edu.ar.ecoride.controller;
 
-import unlar.edu.ar.ecoride.Exeptions.ExepcionVehiculoNoEncontrado;
-import unlar.edu.ar.ecoride.Exeptions.ExcepcionBateriaInsuficiente;
-import unlar.edu.ar.ecoride.model.*;
+import unlar.edu.ar.ecoride.dto.PeticionDesbloqueo;
+import unlar.edu.ar.ecoride.dto.RespuestaDesbloqueo;
+import unlar.edu.ar.ecoride.model.Usuario;
+import unlar.edu.ar.ecoride.model.UsuarioPremium;
+import unlar.edu.ar.ecoride.model.UsuarioRegular;
 import unlar.edu.ar.ecoride.service.ServiceEcoride;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
 public class ControllerEcoride {
 
-    private ServiceEcoride servicioEcoride;
+    private final ServiceEcoride servicioEcoride;
 
     public ControllerEcoride(ServiceEcoride servicioEcoride) {
         this.servicioEcoride = servicioEcoride;
     }
 
     @GetMapping("/api/alquileres/desbloquear")
-    public String desbloquearVehiculo(
-            @RequestParam String patente,
-            @RequestParam String usuarioId,
-            @RequestParam String tipoUsuario,
-            @RequestParam String metodoPago,
-            @RequestParam double tarifaBase
-    ) {
-        try {
-            Usuario usuario;
+    public RespuestaDesbloqueo desbloquear(@RequestBody PeticionDesbloqueo peticion) {
+        Usuario usuario = construirUsuario(peticion.getIdUsuario());
+        return servicioEcoride.procesarDesbloqueo(
+                peticion.getPatente(),
+                usuario,
+                peticion.getMetodoPago());
+    }
 
-            if (tipoUsuario.equalsIgnoreCase("PREMIUM")) {
-                usuario = new UsuarioPremium(usuarioId, "Usuario Premium");
-            } else {
-                usuario = new UsuarioRegular(usuarioId, "Usuario Regular");
-            }
-
-            return servicioEcoride.procesarDesbloqueo(patente, usuario, tarifaBase, metodoPago);
-
-        } catch (ExepcionVehiculoNoEncontrado | ExcepcionBateriaInsuficiente e) {
-            return e.getMessage();
-
-        } catch (IllegalArgumentException e) {
-            return e.getMessage();
-
-        } catch (Exception e) {
-            return "Error inesperado al procesar el desbloqueo.";
+    private Usuario construirUsuario(String idUsuario) {
+        if (idUsuario != null && idUsuario.toUpperCase().startsWith("PREM")) {
+            return new UsuarioPremium(idUsuario, "Usuario Premium " + idUsuario);
         }
+        return new UsuarioRegular(idUsuario, "Usuario Regular " + idUsuario);
     }
 }
